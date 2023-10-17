@@ -19,6 +19,10 @@ while ($row = $statement->fetch()) {
    ];
    $posts[] = $post;
 }
-require('templates/homepage.php');
+?>
 
+<?php
+require('src/model.php');
+$posts = getPosts();
+require('templates/homepage.php');
 ?>
