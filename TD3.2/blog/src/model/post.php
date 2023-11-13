@@ -2,48 +2,51 @@
 
 class Post
 {
-    public $author;
+    public $title;
     public $frenchCreationDate;
-    public $Comment;
+    public $content;
+    public $identifier;
 }
 
-function getPosts(string $post)
+class PostRepository
 {
-    $database = postDbConnect();
-    $statement = $database->prepare(
-        "SELECT id, author, comment, DATE_FORMAT(post_date, '%d/%m/%Y à %Hh%imin%ss') AS french_creation_date FROM posts WHERE post_id = ? ORDER BY post_date DESC"
-    );
-    $statement->execute([$post]);
+    public $database = null;
 
-    $posts = [];
-    while (($row = $statement->fetch())) {
+    public function getPost(string $identifier): Post
+        {
+            dbConnect($this);
+            $statement = $this->database->prepare(
+                "SELECT id, title, content,
+                DATE_FORMAT(creation_date, '%d/%m/%Y à %Hh%imin%ss')
+                AS french_creation_date FROM posts WHERE id = ?"
+            );
+            $statement->execute([$identifier]);
+            
+            $row = $statement->fetch();
+            $post = new Post();
+            $post->title = $row['title'];
+            $post->frenchCreationDate = $row['french_creation_date'];
+            $post->content = $row['content'];
+            $post->identifier = $row['id'];
 
-        $post = new Post();
-
-        $post->author = $row['author'];
-        $post->frenchCreationDate = $row['french_creation_date'];
-        $post->comment = $row['comment'];
-
-        $posts[] = $post;
-    }
-
-    return $posts;
+            return $post;
+        }
 }
-
-function createPost(string $post, string $author, string $comment)
+function createPost(string $post, string $author, string $comment, PostRepository $repository)
 {
-    $database = postDbConnect();
-    $statement = $database->prepare(
-        'INSERT INTO posts(post_id, author, comment, post_date) VALUES(?, ?, ?, NOW())'
+    dbConnect($repository);
+    $statement = $repository->database->prepare(
+        'INSERT INTO posts(post_id, title, content, post_date) VALUES(?, ?, ?, NOW())'
     );
     $affectedLines = $statement->execute([$post, $author, $comment]);
 
     return ($affectedLines > 0);
 }
 
-function postDbConnect()
+function dbConnect(PostRepository $repository)
 {
-    $database = new PDO('mysql:host=localhost;dbname=db;charset=utf8', 'root', 'root');
-
-    return $database;
+    if ($repository->database === null) {
+        $repository->database = new PDO('mysql:host=localhost;
+        dbname=db;charset=utf8', 'root', 'root');
+    }
 }
