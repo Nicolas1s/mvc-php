@@ -34,11 +34,21 @@
 <?php
 foreach ($comments as $comment) {
 ?>
-    <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['french_creation_date'] ?></p>
-    <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+    <p><strong><?= htmlspecialchars($comment->author) ?></strong> le <?= $comment->frenchCreationDate ?></p>
+    <p><?= nl2br(htmlspecialchars($comment->comment)) ?></p>
 <?php
 }
 ?>
+
+<?php
+foreach ($posts as $post) {
+?>
+    <p><strong><?= htmlspecialchars($post->author) ?></strong> le <?= $post->frenchCreationDate ?></p>
+    <p><?= nl2br(htmlspecialchars($post->comment)) ?></p>
+<?php
+}
+?>
+
 <?php $content = ob_get_clean(); ?>
 
 <?php require('layout.php') ?>
