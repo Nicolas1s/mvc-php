@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Controllers\Add_Comment;
+
 require_once('src/model/comment.php');
 
 function addComment(string $post, array $input)

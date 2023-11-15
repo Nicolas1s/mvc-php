@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Controllers\Homepage;
+
 require_once('src/lib/database.php');
 require_once('src/model/post.php');
 

@@ -1,4 +1,6 @@
 <?php
+
+namespace Application\Lib\Database;
 class DatabaseConnection
 {
     public $database = null;

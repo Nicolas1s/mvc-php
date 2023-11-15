@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Post;
+
 require_once('src/lib/database.php');
 
 class Post
@@ -11,7 +13,7 @@ class Post
 }
 class PostRepository
 {
-    public  DatabaseConnection $connection;
+    public \DatabaseConnection $connection;
     public function getPost(string $identifier): Post
     {
         
