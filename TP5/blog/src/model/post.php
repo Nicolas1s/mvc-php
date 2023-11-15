@@ -11,7 +11,7 @@ class Post
 }
 class PostRepository
 {
-    public $connection;
+    public  DatabaseConnection $connection;
     public function getPost(string $identifier): Post
     {
         

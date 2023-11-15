@@ -1,5 +1,5 @@
 <?php
-// src/model.php
+
 
 function getPosts() {
 	$database = dbConnect();
